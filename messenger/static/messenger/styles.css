@@ -1,0 +1,47 @@
+.body {
+    padding: 10px;
+}
+
+div#chatbox {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 10px;
+    overflow: auto;
+    margin: auto;
+    /* default height is 900px ; */
+    height: 700px;
+    position: relative;
+}
+
+.message {
+    padding: 10px;
+    border-radius: 10px;
+    background: #eee;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: row;
+    max-width: 80%;
+}
+
+.message>p {
+    margin: 0;
+    padding: 0;
+    word-wrap: break-word;
+}
+
+.message>i {
+    margin-right: 10px;
+    font-size: 1.5em;
+}
+
+div#chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    flex-flow: column;
+    height: 100%;
+    margin-left: 10px;
+    gap: 20px;
+}

@@ -1,0 +1,68 @@
+{% extends 'messenger/layout.html' %}
+{% load static %}
+{% block body %}
+    <h1>Messages</h1>
+    <h2 id="chat_name">Chat name: {{ chat.name }}</h2>
+    {% if user == chat.creator and chat.name != "general" %}
+    <h3> Edit chat </h3>
+        <form onsubmit="event.preventDefault()" id='edit_chat' style="border: 1px solid black; padding:10px; ">
+            <label for="chat_name_input"> Chat name:</label>
+            <input placeholder="new chat name" class="form-control" type="text" id="chat_name_input" value="{{ chat.name }}">
+            <label for="chat_memebers" id="chat_members_label">a comma seperated list list of new Chat members:</label>
+            <input placeholder="chat members" class="form-control" type="text" id="chat_members" value="{{ members }}">
+            <button class="btn btn-danger my-3" type="submit" id="change_chat_name">Edit chat</button>
+        </form>
+        <br/>
+    {% endif %}
+    {% if avalible_chats %}
+    <h1>Avalible chats: </h1>
+    <ul id="chat_select">
+        {% for chat in avalible_chats %}
+            <li value="{{ chat.id }}">
+                <a href="{% url 'chat' chat.name %}">{{ chat.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <br/>
+    {% endif %}
+    {{ chat.name|json_script:"chat-name" }}
+    <div id="message-form">
+    <h3> Send a message </h3>
+    <form id="form-send" onsubmit="event.preventDefault()"> 
+        <div class="form-group"> 
+            <input data-csrf="{{ csrf_token }}" class='form-control w-100' type="text" placeholder="send a message..." id="message" name="message" />
+        </div>
+    <div class="form-group my-2">
+        <button type="submit" class="btn btn-primary" id="send">Send</button>
+    </div>
+    </form>
+    </div>
+    <div id="chat-log">
+        {% for message in messages %}
+            <div class="message">
+                <div class="message-header">
+                    <p class="message-sender">{{ message.sender }} says: {{message.body}}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <div id='chat-form' style="display:none;">
+    <h1> Create a new chat </h1>
+    <form id="form-create" onsubmit="event.preventDefault()">
+        <div class="form-group"> 
+            <input data-csrf="{{ csrf_token }}" class='form-control w-100' type="text" placeholder="The chats name" id="chatName" name="chatName" />
+        </div>
+        <div class="form-group my-2"> 
+            <input class='form-control w-100' type="text" placeholder="A comma seperated list of members usernames" id="members" name="Members" />
+        </div>
+    <div class="form-group my-2">
+        <button type="submit" class="btn btn-primary" id="create">Create</button>
+    </div>
+    </form>
+    </div>
+    <div id="messages"></div>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'messenger/index.js' %}"></script>
+{% endblock %}
